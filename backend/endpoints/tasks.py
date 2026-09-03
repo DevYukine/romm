@@ -35,10 +35,12 @@ from handler.redis_handler import (
 )
 from tasks.manual.cleanup_missing_firmware import cleanup_missing_firmware_task
 from tasks.manual.cleanup_missing_roms import cleanup_missing_roms_task
+from tasks.manual.convert_library import convert_library_task
 from tasks.manual.recompute_save_content_hashes import (
     recompute_save_content_hashes_task,
 )
 from tasks.manual.sync_folder_scan import sync_folder_scan_task
+from tasks.scheduled.cleanup_conversion_cache import cleanup_conversion_cache_task
 from tasks.scheduled.cleanup_orphaned_resources import cleanup_orphaned_resources_task
 from tasks.scheduled.cleanup_zip_cache import cleanup_zip_cache_task
 from tasks.scheduled.convert_images_to_webp import convert_images_to_webp_task
@@ -105,6 +107,13 @@ scheduled_tasks: list[ScheduledTask] = [
     ),
     ScheduledTask(
         {
+            "name": "cleanup_conversion_cache",
+            "type": TaskType.CLEANUP,
+            "task": cleanup_conversion_cache_task,
+        }
+    ),
+    ScheduledTask(
+        {
             "name": "cleanup_orphaned_resources",
             "type": TaskType.CLEANUP,
             "task": cleanup_orphaned_resources_task,
@@ -139,6 +148,13 @@ manual_tasks: list[ManualTask] = [
             "name": "recompute_save_content_hashes",
             "type": TaskType.CLEANUP,
             "task": recompute_save_content_hashes_task,
+        }
+    ),
+    ManualTask(
+        {
+            "name": "convert_library",
+            "type": TaskType.CONVERSION,
+            "task": convert_library_task,
         }
     ),
 ]
